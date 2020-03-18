@@ -15,15 +15,17 @@ You may assume that each input would have **exactly** one solution, and you may 
 
 My approach is a dynamic one - for each number I come across, I store the remaining part of the sum I need in a cache if it doesnt already exist. Once I come across the solution, it would already be in the cache and thus returns.
 
-    /**
-     * @param {number[]} nums
-     * @param {number} target
-     * @return {number[]}
-     */
-    const twoSum => (nums, target) {
-        const hash = {};
-        for(let i = 0; i < nums.length; i++){
-            if(hash[nums[i]] >= 0) return [hash[nums[i]], i]
-            hash[target - nums[i]] = i
-        }
-    };
+```javascript
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+const twoSum => (nums, target) {
+    const hash = {};
+    for(let i = 0; i < nums.length; i++){
+        if(hash[nums[i]] >= 0) return [hash[nums[i]], i]
+        hash[target - nums[i]] = i
+    }
+};
+```
