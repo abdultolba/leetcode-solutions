@@ -11,7 +11,7 @@ You may assume that each input would have **exactly** one solution, and you may 
     Because nums[0] + nums[1] = 2 + 7 = 9,
     return [0, 1].
 
-# Solution
+## Solution
 
 My approach is a dynamic one - for each number I come across, I store the remaining part of the sum I need in a cache if it doesnt already exist. Once I come across the solution, it would already be in the cache and thus returns.
 
