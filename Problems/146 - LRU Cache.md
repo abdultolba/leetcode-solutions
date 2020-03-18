@@ -32,7 +32,7 @@ For readability, I decided to use ES6 classes rather than prototypes to define t
 
 Code:
 
-```
+```javascript
 /** 
  * Your LRUCache object will be instantiated and called as such:
  * var obj = new LRUCache(capacity)
