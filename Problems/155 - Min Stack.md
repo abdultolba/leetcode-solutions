@@ -9,7 +9,7 @@ Design a stack that supports push, pop, top, and retrieving the minimum element 
 
 ## Example
 
-```
+```javascript
 MinStack minStack = new MinStack();
 minStack.push(-2);
 minStack.push(0);
@@ -30,7 +30,7 @@ This works well when factoring in scalability because the minimum value will alw
 
 Code:
 
-```
+```javascript
 /** 
  * Your MinStack object will be instantiated and called as such:
  * var obj = new MinStack()
