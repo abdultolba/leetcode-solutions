@@ -10,7 +10,7 @@ Design a stack that supports push, pop, top, and retrieving the minimum element 
 ## Example
 
 ```javascript
-MinStack minStack = new MinStack();
+let minStack = new MinStack();
 minStack.push(-2);
 minStack.push(0);
 minStack.push(-3);
