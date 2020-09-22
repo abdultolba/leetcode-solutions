@@ -29,11 +29,11 @@ const twoSum => (nums, target) {
     }
 };
 ```
-Unfortunately this isn't a very efficient approach. For each time the outer loop executes, the inner loop executes `n` times. Therefore, the statement in the nested loop executes a total of `n * n` times. This results in a time complexity of $O$($n^2$), meaning it grows in quadratic time. 
+Unfortunately this isn't a very efficient approach. For each time the outer loop executes, the inner loop executes `n` times. Therefore, the statement in the nested loop executes a total of `n * n` times. This results in a time complexity of <img src="https://render.githubusercontent.com/render/math?math=O(n^2)">, meaning it grows in quadratic time. 
 
 ---
 
-A better approach is a dynamic one - for each number I come across, I store the remaining part of the sum I need in a cache if it doesnt already exist. Once I come across the solution, it would already be in the cache and thus returns. By increasing space complexity from $O$($1$) to $O$($n$), we can drastically improve the time complexity.
+A better approach is a dynamic one - for each number I come across, I store the remaining part of the sum I need in a cache if it doesnt already exist. Once I come across the solution, it would already be in the cache and thus returns. By increasing space complexity from <img src="https://render.githubusercontent.com/render/math?math=O(1)"> to <img src="https://render.githubusercontent.com/render/math?math=O(n)">, we can drastically improve the time complexity.
 
 i.e: If `target = 9`, and the input is `nums = [2, 7, 11, 15]`, then when I first read `nums[0] = 2`, I would store `9 - 2 = 7` in the cache. This would look like:
 ```javascript
@@ -41,7 +41,7 @@ i.e: If `target = 9`, and the input is `nums = [2, 7, 11, 15]`, then when I firs
     7: 0
 }
 ``` 
-The solution, which would have a linear time - $O$($n$) - would thus be:
+The solution, which would have a linear time <img src="https://render.githubusercontent.com/render/math?math=O(n)"> would thus be:
 
 ```javascript
 /**
