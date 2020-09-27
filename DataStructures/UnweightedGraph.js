@@ -8,13 +8,23 @@ class UnweightedGraph {
   }
 
   /**
+   * Determines whether or not a vertex exists in the adjacency list.
+   * Time Complexity: O(1) since JavaScript's implementation of Map.prototype.has() is constant.
+   * @param {*} u The vertex being checked in the graph G
+   * @returns {boolean} True if the graph contains the vertex u, false otherwise.
+   */
+  contains(u) {
+    return this.adjacencyList.has(u);
+  }
+
+  /**
    * Adds a new vertex to the graph and initializes
    * it with an empty set. Returns if the vertex already exists
    * @param {*} u The vertex to insert into the graph
-   * @returns The instance of the current graph.
+   * @returns {UnweightedGraph} The instance of the current graph.
    */
   addVertex(u) {
-    if (this.adjacencyList.has(u)) return;
+    if (this.contains(u)) return;
     this.adjacencyList.set(u, new Set());
 
     return this;
@@ -25,11 +35,11 @@ class UnweightedGraph {
    * If either node doesn't exist, it is created.
    * @param {*} u The first vertex that connects to v
    * @param {*} v The second vertex that connects to u
-   * @returns The instance of the current graph.
+   * @returns {UnweightedGraph} The instance of the current graph.
    */
   addEdge(u, v) {
-    if (!this.adjacencyList.has(u)) this.addVertex(u);
-    if (!this.adjacencyList.has(v)) this.addVertex(v);
+    if (!this.contains(u)) this.addVertex(u);
+    if (!this.contains(v)) this.addVertex(v);
 
     this.adjacencyList.get(u).add(v);
     // Comment out the line below to make the graph directed,
@@ -43,10 +53,10 @@ class UnweightedGraph {
    * Removes an undirected connection or edge between two nodes.
    * @param {*} u The first vertex that connects to v
    * @param {*} v The second vertex that connects to u
-   * @returns The instance of the current graph.
+   * @returns {UnweightedGraph} The instance of the current graph.
    */
   removeEdge(u, v) {
-    if (!this.adjacencyList.has(u) || !this.adjacencyList.has(v)) return this;
+    if (!this.contains(u) || !this.contains(v)) return this;
     this.adjacencyList.get(u).delete(v);
     // Comment out the line below if the graph is directed,
     // in which case it would delete the *directed* edge u -> v
@@ -55,8 +65,13 @@ class UnweightedGraph {
     return this;
   }
 
+  /**
+   * Removes a vertex and all associated edges from the graph.
+   * @param {*} u The vertex to be deleted
+   * @returns {UnweightedGraph} The instance of the current graph.
+   */
   removeVertex(u) {
-    if (!this.adjacencyList.has(u)) return this;
+    if (!this.contains(u)) return this;
 
     const neighbors = this.getNeighbors(u);
 
@@ -69,19 +84,25 @@ class UnweightedGraph {
   /**
    * Retrieves the neighbors (a Set) of a given node in the graph.
    * @param {*} u The vertex who's neighbors are being retrieved
-   * @returns The neighbors of a provided node. Empty set if the vertex doesn't exist.
+   * @returns {Array} The neighbors of a provided node. Empty set if the vertex doesn't exist.
    */
   getNeighbors(u) {
-    if (this.adjacencyList.has(u)) {
+    if (this.contains(u)) {
       return [...this.adjacencyList.get(u)];
     }
 
     return [];
   }
 
-  dfs(u) {
+  /**
+   * Performs an *iterative* depth first traversal and returns a
+   * list of vertices in the order they were visited.
+   * @param {*} u The vertex to start the traversal at
+   * @returns {Array} The list of nodes in the order of visitation
+   */
+  dfsIterative(u) {
     // If the vertex doesn't exist, then return an empty array.
-    if (!this.adjacencyList.has(u)) return [];
+    if (!this.contains(u)) return [];
 
     // 1. Create stack and push the starting vertex to it.
     // 2. Create a hash set for us to mark to the vertices visited
@@ -113,31 +134,63 @@ class UnweightedGraph {
     return [...visited];
   }
 
-  dfsRecursive(u) {}
+  /**
+   * Performs an *recursive* depth first traversal and returns a
+   * list of vertices in the order they were visited.
+   * @param {*} u The vertex to start the traversal at
+   * @returns {Array} The list of nodes in the order of visitation
+   */
+  dfsRecursive(u) {
+    // If the vertex doesn't exist, then return an empty array.
+    if (!this.contains(u)) return [];
 
-  bfs(vertex) {}
+    let visited = new Set();
+
+    const dfs = (vertex) => {
+      visited.add(vertex);
+      let neighbors = this.getNeighbors(vertex);
+      for (let neighbor of neighbors) {
+        if (!visited.has(neighbor)) dfs(neighbor);
+      }
+    };
+
+    dfs(u);
+
+    return [...visited];
+  }
+
+  /**
+   * Performs a breadth first traversal and returns a
+   * list of vertices in the order they were visited.
+   * @param {*} u The vertex to start the traversal at
+   * @returns {Array} The list of nodes in the order of visitation
+   */
+  bfs(u) {
+    if (!this.contains(u)) return [];
+
+    let queue = [u],
+      visited = new Set(),
+      vertex;
+
+    while (queue.length > 0) {
+      vertex = queue.shift();
+
+      if (!visited.has(vertex)) {
+        visited.add(vertex);
+
+        let neighbors = this.getNeighbors(vertex);
+        for (let neighbor of neighbors) {
+          queue.push(neighbor);
+        }
+      }
+    }
+
+    return [...visited];
+  }
 
   printGraph() {
     console.log(this.adjacencyList);
   }
 }
 
-let graph = new UnweightedGraph();
-
-graph.addEdge("San Francisco", "Detroit");
-graph.addEdge("San Francisco", "Los Angeles");
-graph.addEdge("Detroit", "New York");
-graph.addEdge("San Francisco", "New York");
-graph.addEdge("Detroit", "Cleveland");
-graph.addEdge("Cleveland", "Portland");
-
-// graph.removeVertex('Detroit')
-// graph.removeEdge("San Francisco", "Los Angeles")
-
-graph.printGraph();
-
-console.log(graph.dfs('Detroit'));
-
-module.exports = {
-  UnweightedGraph,
-};
+module.exports = UnweightedGraph;
